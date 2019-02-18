@@ -6,7 +6,6 @@ const profile = require('./routers/api/profile');
 const posts = require('./routers/api/posts');
 const app = express();
 
-
 // DB config
 const db = require('./config/keys').mongoURI;
 
