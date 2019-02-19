@@ -1,10 +1,11 @@
-const express = require("express");
-const mongoose = require("mongoose");
-const bodyParser = require("body-parser");
+const express = require('express');
+const mongoose = require('mongoose');
+const bodyParser = require('body-parser');
+const passport = require('passport');
 
-const users = require("./routers/api/users");
-const profile = require("./routers/api/profile");
-const posts = require("./routers/api/posts");
+const users = require('./routers/api/users');
+const profile = require('./routers/api/profile');
+const posts = require('./routers/api/posts');
 const app = express();
 
 // Body parser middleware
@@ -16,20 +17,26 @@ app.use(
 app.use(bodyParser.json());
 
 // DB config
-const db = require("./config/keys").mongoURI;
+const db = require('./config/keys').mongoURI;
 
 // Connect to mongodb
 mongoose
-  .connect(db, { useNewUrlParser: true }) // Avoid DeprecationWarning
-  .then(() => console.log("Mongodb connected"))
+  .connect(db, {
+    useNewUrlParser: true
+  }) // Avoid DeprecationWarning
+  .then(() => console.log('Mongodb connected'))
   .catch(err => console.log(err));
 
-app.get("/", (req, res) => res.send("Hello"));
+// Passport Middleware
+app.use(passport.initialize());
+
+// Passport Config
+require('./config/passport')(passport);
 
 // Use routes
-app.use("/api/users", users);
-app.use("/api/profile", profile);
-app.use("/api/posts", posts);
+app.use('/api/users', users);
+app.use('/api/profile', profile);
+app.use('/api/posts', posts);
 
 const port = process.env.PORT || 5000;
 
