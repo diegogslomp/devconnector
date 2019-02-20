@@ -3,10 +3,12 @@ const mongoose = require('mongoose');
 const passport = require('passport');
 const router = express.Router();
 
-// Load Profile Model
+// Load Models
 const Profile = require('../../models/Profile');
-// Load User Model
 const User = require('../../models/User');
+
+// Load Validators
+const validateProfileInput = require('../../validation/profile');
 
 // @route  GET api/profile/test
 // @desc   Tests profile route
@@ -27,6 +29,7 @@ router.get(
   (req, res) => {
     const errors = {};
     Profile.findOne({ user: req.user.id })
+      .populate('user', ['name', 'avatar'])
       .then(profile => {
         if (!profile) {
           errors.noprofile = 'There is no profile por this user';
@@ -46,6 +49,13 @@ router.post(
   '/',
   passport.authenticate('jwt', { session: false }),
   (req, res) => {
+    const { errors, isValid } = validateProfileInput(req.body);
+
+    // Check Validation
+    if (!isValid) {
+      return res.status(400).json(errors);
+    }
+
     //Get fields
     const profileFields = {};
     profileFields.user = req.user.id;
@@ -61,6 +71,7 @@ router.post(
     if (typeof req.body.skills !== 'undefined') {
       profileFields.skills = req.body.skills.split(',');
     }
+
     // Social
     profileFields.social = {};
     if (req.body.youtube) profileFields.social.youtube = req.body.youtube;
@@ -79,6 +90,7 @@ router.post(
         ).then(profile => res.json(profile));
       } else {
         // Create
+
         // Check if handle exists
         Profile.findOne({ handle: profileFields.handle }).then(profile => {
           if (profile) {
