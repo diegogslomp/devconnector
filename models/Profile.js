@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-// Create schema
+// Create Schema
 const ProfileSchema = new Schema({
   user: {
     type: Schema.Types.ObjectId,
@@ -9,7 +9,7 @@ const ProfileSchema = new Schema({
   },
   handle: {
     type: String,
-    require: true,
+    required: true,
     max: 40
   },
   company: {
@@ -60,8 +60,7 @@ const ProfileSchema = new Schema({
         default: false
       },
       description: {
-        type: String,
-        required: true
+        type: String
       }
     }
   ],
@@ -96,19 +95,19 @@ const ProfileSchema = new Schema({
     }
   ],
   social: {
-    facebook: {
-      type: String
-    },
-    instagram: {
+    youtube: {
       type: String
     },
     twitter: {
       type: String
     },
+    facebook: {
+      type: String
+    },
     linkedin: {
       type: String
     },
-    youtube: {
+    instagram: {
       type: String
     }
   },

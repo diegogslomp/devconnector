@@ -7,18 +7,18 @@
     "start": "node server.js",
     "server": "nodemon server.js"
   },
-  "author": "Diego Gobbi Slomp",
+  "author": "Brad Traversy",
   "license": "MIT",
   "dependencies": {
     "bcryptjs": "^2.4.3",
-    "body-parser": "^1.18.3",
-    "express": "^4.16.4",
-    "gravatar": "^1.8.0",
-    "jsonwebtoken": "^8.4.0",
-    "mongoose": "^5.4.13",
+    "body-parser": "^1.18.2",
+    "express": "^4.16.3",
+    "gravatar": "^1.6.0",
+    "jsonwebtoken": "^8.2.0",
+    "mongoose": "^5.4.15",
     "passport": "^0.4.0",
     "passport-jwt": "^4.0.0",
-    "validator": "^10.11.0"
+    "validator": "^9.4.1"
   },
   "devDependencies": {
     "nodemon": "^1.18.10"
