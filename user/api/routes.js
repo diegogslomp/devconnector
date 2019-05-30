@@ -28,7 +28,9 @@ router.post(
     }
 
     try {
+      // Get info from post request
       const { name, email, password } = req.body;
+
       // See if user exists
       let user = await User.findOne({ email });
       if (user) {
@@ -40,20 +42,22 @@ router.post(
       // Get user gravatar
       const avatar = gravatar.url(email, { s: '200', r: 'pg', d: 'mm' });
 
+      // Encrypt password
+      const salt = await bcrypt.genSalt(10);
+      const encryptedPassword = await bcrypt.hash(password, salt);
+
+      // User create and db save
       user = new User({
         name,
         email,
         avatar,
-        password
+        password: encryptedPassword
       });
-
-      // Encrypt password
-      const salt = await bcrypt.genSalt(10);
-      user.password = await bcrypt.hash(password, salt);
-
       await user.save();
 
       // Return jwt
+      // TODO
+
       res.send('User Registered');
     } catch (err) {
       console.error(err.message);
