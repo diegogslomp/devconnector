@@ -7,6 +7,9 @@ connectDB();
 
 app.get('/', (req, res) => res.send('API running'));
 
+// Init Middlewares
+app.use(express.json({ extended: false }));
+
 // Define Routes
 app.use('/api/users', require('./user/api/routes'));
 app.use('/api/auth', require('./auth/api/routes'));
