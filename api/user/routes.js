@@ -24,12 +24,13 @@ router.post(
   ],
 
   async (req, res) => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array() });
-    }
-
     try {
+      // Get errors if validation result failed
+      const errors = validationResult(req);
+      if (!errors.isEmpty()) {
+        return res.status(400).json({ errors: errors.array() });
+      }
+
       // Get info from post request
       const { name, email, password } = req.body;
 
