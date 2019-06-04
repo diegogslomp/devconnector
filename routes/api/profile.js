@@ -1,5 +1,7 @@
 const express = require('express');
 const auth = require('../../middleware/auth');
+const request = require('request');
+const config = require('config');
 const { check, validationResult } = require('express-validator/check');
 const Profile = require('../../models/profile');
 const User = require('../../models/user');
@@ -209,7 +211,7 @@ router.put(
   }
 );
 
-// @route  Delete api/profile/experience/:exp_id
+// @route  DELETE api/profile/experience/:exp_id
 // @desc   Delete profile experience
 // @access Private
 router.delete('/experience/:exp_id', auth, async (req, res) => {
@@ -289,7 +291,7 @@ router.put(
   }
 );
 
-// @route  Delete api/profile/education/:edu_id
+// @route  DELETE api/profile/education/:edu_id
 // @desc   Delete profile education
 // @access Private
 router.delete('/education/:edu_id', auth, async (req, res) => {
@@ -305,6 +307,36 @@ router.delete('/education/:edu_id', auth, async (req, res) => {
     profile.education.splice(removeIndex, 1);
     await profile.save();
     res.json(profile);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Server Error');
+  }
+});
+
+// @route  GET api/profile/github/:username
+// @desc   Get user repos from github
+// @access Public
+router.get('/github/:username', async (req, res) => {
+  try {
+    const options = {
+      uri: `https://api.github.com/users/${
+        req.params.username
+      }/repos?per_page=5&sort=created:asc&client_id=${config.get(
+        'githubClientId'
+      )}&client_secret=${config.get('githubClientSecret')}`,
+      method: 'GET',
+      headers: { 'user-agent': 'node-js' }
+    };
+    request(options, (error, response, body) => {
+      if (error) {
+        console.error(error);
+        return res.status(500).json({ msg: 'Github request error' });
+      }
+      if (response.statusCode !== 200) {
+        return res.status(404).json({ msg: 'No Github profile found' });
+      }
+      res.json(JSON.parse(body));
+    });
   } catch (err) {
     console.error(err.message);
     res.status(500).send('Server Error');
