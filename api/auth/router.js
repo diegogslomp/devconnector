@@ -1,7 +1,7 @@
 const express = require('express');
-const auth = require('../../middleware/auth');
+const auth = require('./middleware');
 const router = express.Router();
-const User = require('../../models/user');
+const User = require('../user/model');
 
 // @route  GET api/auth
 // @desc   Test route

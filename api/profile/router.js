@@ -1,10 +1,10 @@
 const express = require('express');
-const auth = require('../../middleware/auth');
+const auth = require('../auth/middleware');
 const request = require('request');
 const config = require('config');
 const { check, validationResult } = require('express-validator/check');
-const Profile = require('../../models/profile');
-const User = require('../../models/user');
+const Profile = require('./model');
+const User = require('../user/model');
 const router = express.Router();
 
 // @route  GET api/profile/me
