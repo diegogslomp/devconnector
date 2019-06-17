@@ -6,6 +6,7 @@ import Landing from './components/layout/Landing';
 import Login from './components/auth/Login';
 import Dashboard from './components/dashboard/Dashboard';
 import CreateProfile from './components/layout/profile-forms/CreateProfile';
+import EditProfile from './components/layout/profile-forms/EditProfile';
 import Register from './components/auth/Register';
 import PrivateRoute from './components/routing/PrivateRoute';
 import setAuthToken from './utils/setAuthToken';
@@ -41,6 +42,11 @@ const App = () => {
                 exact
                 path="/create-profile"
                 component={CreateProfile}
+              />
+              <PrivateRoute
+                exact
+                path="/edit-profile"
+                component={EditProfile}
               />
             </Switch>
           </section>
